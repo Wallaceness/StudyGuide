@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">StudyGuide</string>
+    <string name="choose_a_topic">Choose a Topic:</string>
+    <string name="spin_the_wheel_android_interview_topics">Spin the Wheel: Android Interview Topics!</string>
+    <string name="random">Random</string>
+</resources>
