@@ -7,8 +7,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import java.io.File
-import java.io.FileNotFoundException
+import java.io.*
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -16,15 +15,25 @@ import java.util.concurrent.Executors
 abstract class TopicRoomDatabase : RoomDatabase() {
     abstract fun topicDao(): TopicDao
 
+    var topicsList: ArrayList<String>?= ArrayList<String>()
+
 
     companion object {
         @Volatile
+        var topicsList: ArrayList<String> = ArrayList<String>()
         private var INSTANCE: TopicRoomDatabase? = null
         private const val NUMBER_OF_THREADS = 4
         val databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS)
 
         fun getDatabase(context: Context): TopicRoomDatabase? {
+            val asset:InputStream=context.applicationContext.assets.open("Android_Topics.txt")
+            val reader: BufferedReader = BufferedReader(InputStreamReader(asset))
+            var line=reader.readLine();
+            while (line!=null){
+                topicsList.add(line)
+                line = reader.readLine()
+            }
             if (INSTANCE == null) {
                 synchronized(TopicRoomDatabase::class.java) {
                     if (INSTANCE == null) {
@@ -51,20 +60,8 @@ abstract class TopicRoomDatabase : RoomDatabase() {
                         // If you want to start with more words, just add them.
                         val dao: TopicDao = INSTANCE!!.topicDao()
                         dao.deleteAll()
-//                        val assetManager = AssetManager.
-                        var file:File ? =null
-                        var scanner:Scanner? = null
-                        try{
-                            file= File("")//new file to go here.
-                            scanner=Scanner(file)
-                        }
-                        catch(e: FileNotFoundException){
-                            e.printStackTrace()
-                            return@execute
-                        }
-                        while (scanner!!.hasNextLine()){
-                            val word = Topic(scanner.nextLine())
-                            dao.insert(word)
+                        for (item in topicsList){
+                            dao.insert(Topic(item))
                         }
                     }
                 }
