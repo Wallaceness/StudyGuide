@@ -3,4 +3,10 @@
     <string name="choose_a_topic">Choose a Topic:</string>
     <string name="spin_the_wheel_android_interview_topics">Spin the Wheel: Android Interview Topics!</string>
     <string name="random">Random</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_a_new_android_topic">Add a New Android Topic</string>
+    <string name="topic">Topic</string>
+    <string name="save">Save</string>
 </resources>
